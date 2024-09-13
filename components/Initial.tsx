@@ -10,7 +10,7 @@ function Initial() {
         source={homeImage} // Import local image
         style={styles.image}
       />
-      <Text>Keep on track With Todo</Text>
+      <Text style={styles.title}>Keep on track With Todo</Text>
       <Text>Make your task on track easily and seamlessly</Text>
       <Button title="Get Started" onPress={() => console.log("Get Started")} />
     </View>
@@ -30,5 +30,12 @@ const styles = StyleSheet.create({
     width: 376,
     height: 300,
     marginTop: 100,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginTop: 20,
+    marginBottom: 10,
+    textAlign: "center",
   },
 });
