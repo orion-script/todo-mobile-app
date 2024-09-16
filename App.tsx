@@ -1,22 +1,25 @@
 import { StatusBar } from "expo-status-bar";
+import { ThemeProvider } from "styled-components/native";
+import { Navigation } from "./navigation";
 import { StyleSheet, Text, View } from "react-native";
+import { theme } from "./theme";
 import Initial from "./components/Initial";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      {/* <Text>Open up App.tsx to start working on your app!</Text> */}
-      <Initial />
+    <>
+      <ThemeProvider theme={theme}>
+        <Navigation />
+      </ThemeProvider>
       <StatusBar style="auto" />
-    </View>
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+{
+  /* <ThemeProvider theme={theme}>
+<AuthenticationContextProvider>
+  <Navigation />
+</AuthenticationContextProvider>
+</ThemeProvider>
+<ExpoStatusBar style="auto" /> */
+}

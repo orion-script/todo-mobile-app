@@ -2,10 +2,10 @@ import React from "react";
 import { Link } from "react-router-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { StyleSheet, Image, Text, View } from "react-native";
-import Button from "./Button";
-import { Spacer } from "./Spacer";
+import Button from "../components/Button";
+import { Spacer } from "../components/Spacer";
 
-function Initial() {
+function AccountScreen({ navigation }: any) {
   return (
     <View style={styles.container}>
       <Image source={require("../assets/home-img.png")} style={styles.image} />
@@ -16,7 +16,7 @@ function Initial() {
       <Spacer />
       <Button
         title="Create Account"
-        onPress={() => console.log("Create Account")}
+        onPress={() => navigation.navigate("Register")}
       />
       <View
         style={{
@@ -27,17 +27,16 @@ function Initial() {
           // marginBottom: 40,
         }}
       >
-        <Text style={styles.already}>Already have an account? Log in</Text>
-        {/* <Link style={styles.login}>Log in</Link> */}
-        {/* <TouchableOpacity onPress={() => console.log("Create Account")}>
-          <Text style={{ color: "blue" }}>Google</Text>
-        </TouchableOpacity> */}
+        <Text style={styles.already}>Already have an account?</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+          <Text style={styles.login}>Log in</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
 }
 
-export default Initial;
+export default AccountScreen;
 
 const styles = StyleSheet.create({
   container: {

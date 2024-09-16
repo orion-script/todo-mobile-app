@@ -41,18 +41,21 @@ const Button: React.FC<ButtonProps> = ({
 // Styles for the button and text
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#1E90FF", // Default color
+    width: 325,
+    height: 50,
+    backgroundColor: "#458AE5",
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 50,
     alignItems: "center",
     justifyContent: "center",
   },
   disabledButton: {
-    backgroundColor: "#A9A9A9", // Disabled color
+    backgroundColor: "#A9A9A9",
   },
   text: {
     color: "#fff",
     fontSize: 16,
+    fontWeight: "semibold",
   },
 });
 
