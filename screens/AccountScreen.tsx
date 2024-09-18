@@ -5,7 +5,7 @@ import { StyleSheet, Image, Text, View } from "react-native";
 import Button from "../components/Button";
 import { Spacer } from "../components/Spacer";
 
-function AccountScreen({ navigation }: any) {
+export const AccountScreen = ({ navigation }: any) => {
   return (
     <View style={styles.container}>
       <Image source={require("../assets/home-img.png")} style={styles.image} />
@@ -34,9 +34,7 @@ function AccountScreen({ navigation }: any) {
       </View>
     </View>
   );
-}
-
-export default AccountScreen;
+};
 
 const styles = StyleSheet.create({
   container: {

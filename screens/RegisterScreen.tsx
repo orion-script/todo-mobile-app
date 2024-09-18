@@ -1,28 +1,87 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import Button from "../components/Button";
+import React, { useState, useContext } from "react";
+import {
+  AccountBackground,
+  AccountContainer,
+  AuthButton,
+  AuthInput,
+  ErrorContainer,
+  Title,
+} from "../components/account.styles";
+import { View, Image, TouchableOpacity } from "react-native";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faArrowAltCircleLeft } from "@fortawesome/free-solid-svg-icons";
 
-function RegisterScreen({ navigation }: any) {
+export const RegisterScreen = ({ navigation }: any) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [repeatedPassword, setRepeatedPassword] = useState("");
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>RegisterScreen</Text>
-      <Button title="Back" onPress={() => navigation.navigate("Main")} />
-    </View>
+    <AccountBackground>
+      <TouchableOpacity
+        style={{
+          width: 30,
+          height: 30,
+          position: "absolute",
+          top: 100,
+          left: 5,
+        }}
+        onPress={() => navigation.goBack()}
+      >
+        <Image
+          style={{
+            width: 30,
+            height: 30,
+            position: "absolute",
+            top: 10,
+            left: 5,
+          }}
+          source={require("../assets/arrow-back.png")}
+        />
+      </TouchableOpacity>
+      <Title>Register Page</Title>
+      <View style={{ marginTop: 30 }} />
+      <AccountContainer>
+        <AuthInput
+          label="Email"
+          value={email}
+          textContentType="emailAddress"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          onChangeText={(u) => setEmail(u)}
+        />
+
+        <View style={{ marginTop: 20 }} />
+        <AuthInput
+          label="Password"
+          value={password}
+          textContentType="password"
+          secureTextEntry
+          autoCapitalize="none"
+          onChangeText={(p) => setPassword(p)}
+        />
+        <View style={{ marginTop: 20 }} />
+        <AuthInput
+          label="Repeat Password"
+          value={repeatedPassword}
+          textContentType="password"
+          secureTextEntry
+          autoCapitalize="none"
+          onChangeText={(p) => setRepeatedPassword(p)}
+        />
+        <View style={{ marginTop: 40 }} />
+        <AuthButton
+          icon="lock-open-outline"
+          mode="contained"
+          onPress={() => console.log("Register")}
+        >
+          Register
+        </AuthButton>
+        <View style={{ marginTop: 20 }} />
+        {/* <AuthButton mode="contained" onPress={() => navigation.goBack()}>
+          Back
+        </AuthButton> */}
+      </AccountContainer>
+    </AccountBackground>
   );
-}
-
-export default RegisterScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 20,
-    marginBottom: 20,
-  },
-});
+};
