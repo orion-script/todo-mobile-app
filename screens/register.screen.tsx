@@ -8,10 +8,9 @@ import {
   Title,
 } from "../components/account.styles";
 import { View, Image, TouchableOpacity } from "react-native";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faArrowAltCircleLeft } from "@fortawesome/free-solid-svg-icons";
 
 export const RegisterScreen = ({ navigation }: any) => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatedPassword, setRepeatedPassword] = useState("");
@@ -42,6 +41,14 @@ export const RegisterScreen = ({ navigation }: any) => {
       <Title>Register Page</Title>
       <View style={{ marginTop: 30 }} />
       <AccountContainer>
+        <AuthInput
+          label="Name"
+          value={name}
+          textContentType="name"
+          keyboardType="default"
+          autoCapitalize="sentences"
+          onChangeText={(u) => setName(u)}
+        />
         <AuthInput
           label="Email"
           value={email}
