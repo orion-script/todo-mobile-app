@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { useAuth } from "../contexts/auth.context";
 import {
   AccountBackground,
   AccountContainer,
@@ -7,11 +8,31 @@ import {
   ErrorContainer,
   Title,
 } from "../components/account.styles";
-import { View, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+  Text,
+} from "react-native";
 
 export const LoginScreen = ({ navigation }: any) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { login, isLoading } = useAuth();
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
+
+  const handleLogin = async () => {
+    console.log("Logging in...");
+    try {
+      setError(null);
+      await login(email, password);
+      console.log("Logged in");
+      // navigation.navigate("Home");
+    } catch (e) {
+      setError("Failed to log in");
+    }
+  };
 
   return (
     <AccountBackground>
@@ -59,17 +80,30 @@ export const LoginScreen = ({ navigation }: any) => {
           onChangeText={(p) => setPassword(p)}
         />
         <View style={{ marginTop: 40 }} />
-        <AuthButton
+        {/* <AuthButton
           icon="lock-open-outline"
           mode="contained"
-          onPress={() => console.log("Login")}
+          onPress={handleLogin}
         >
           Login
-        </AuthButton>
+        </AuthButton> */}
+        {!isLoading ? (
+          <AuthButton
+            icon="lock-open-outline"
+            mode="contained"
+            onPress={handleLogin}
+          >
+            Login
+          </AuthButton>
+        ) : (
+          <ActivityIndicator animating={true} />
+        )}
         {/* <View style={{ marginTop: 20 }} /> */}
         {/* <AuthButton mode="contained" onPress={() => navigation.goBack()}>
           Back
         </AuthButton> */}
+        {isLoading && <ActivityIndicator />}
+        {error && <Text>{error}</Text>}
       </AccountContainer>
     </AccountBackground>
   );

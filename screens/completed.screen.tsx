@@ -1,20 +1,47 @@
 // CompletedScreen.tsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FlatList } from "react-native";
 import { CheckBox } from "react-native-elements";
-import { mockTodos } from "../utils/todos";
-import { toggleTodo } from "../utils/toggleTodo";
 import styled from "styled-components/native";
+import { useAuth } from "../contexts/auth.context";
+import { Todo } from "../utils/todoTypes";
 
 export const CompletedScreen = () => {
-  const [todos, setTodos] = useState(mockTodos);
+  const { userToken, isLoading } = useAuth();
+  const [todos, setTodos] = useState<Todo[]>([]);
 
-  // Filter completed todos (status: "completed")
+  useEffect(() => {
+    fetchTodos();
+    console.log("Todos", todos);
+  }, []);
+
+  const fetchTodos = async () => {
+    try {
+      console.log("Fetching todos...");
+      const response = await fetch("http://localhost:3000/todos", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userToken}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Fetched data", data);
+      setTodos(data);
+    } catch (error) {
+      console.error("Failed to fetch todos", error);
+    }
+  };
   const completedTodos = todos.filter((todo) => todo.status === "completed");
 
   return (
     <Container>
-      <Text>Completed Todos</Text>
+      {/* <Text>Completed Todos</Text> */}
       <FlatList
         data={completedTodos}
         keyExtractor={(item) => item._id}
@@ -22,7 +49,7 @@ export const CompletedScreen = () => {
           <TodoItem>
             <CheckBox
               checked={item.status === "completed"}
-              onPress={() => toggleTodo(item._id, todos, setTodos)} // Use the imported function
+              // onPress={() => toggleTodo(item._id)} // Use the imported function
               containerStyle={{
                 backgroundColor: "transparent",
                 borderWidth: 0,
@@ -33,7 +60,7 @@ export const CompletedScreen = () => {
                   color: "#808080",
                 },
               ]}
-              title={item.title}
+              title={item.description}
             />
           </TodoItem>
         )}

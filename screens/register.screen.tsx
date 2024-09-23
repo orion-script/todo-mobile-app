@@ -7,13 +7,33 @@ import {
   ErrorContainer,
   Title,
 } from "../components/account.styles";
-import { View, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Image,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
+import { useAuth } from "../contexts/auth.context";
 
 export const RegisterScreen = ({ navigation }: any) => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [repeatedPassword, setRepeatedPassword] = useState("");
+  const { register, isLoading } = useAuth();
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [repeatedPassword, setRepeatedPassword] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
+
+  const handleRegister = async () => {
+    console.log("Registering...");
+    try {
+      setError(null);
+      await register(name, email, password);
+      console.log("Registered");
+    } catch (e) {
+      setError("Registration failed");
+    }
+  };
 
   return (
     <AccountBackground>
@@ -49,6 +69,7 @@ export const RegisterScreen = ({ navigation }: any) => {
           autoCapitalize="sentences"
           onChangeText={(u) => setName(u)}
         />
+        <View style={{ marginTop: 20 }} />
         <AuthInput
           label="Email"
           value={email}
@@ -80,11 +101,14 @@ export const RegisterScreen = ({ navigation }: any) => {
         <AuthButton
           icon="lock-open-outline"
           mode="contained"
-          onPress={() => console.log("Register")}
+          onPress={handleRegister}
         >
           Register
         </AuthButton>
+        {isLoading && <ActivityIndicator />}
+        {error && <Text>{error}</Text>}
         <View style={{ marginTop: 20 }} />
+
         {/* <AuthButton mode="contained" onPress={() => navigation.goBack()}>
           Back
         </AuthButton> */}
