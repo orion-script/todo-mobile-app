@@ -83,6 +83,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       if (response.ok && data.token) {
         await AsyncStorage.setItem("userToken", data.token);
         setUserToken(data.token);
+        fetchUserProfile(data.token);
       } else {
         console.error("Login failed", data.message);
       }

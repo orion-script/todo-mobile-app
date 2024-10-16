@@ -15,9 +15,8 @@ export const Navigation = () => {
   console.log("userToken", userToken);
 
   if (isLoading) {
-    return <ActivityIndicator />; // Show loading indicator while loading token
+    return <ActivityIndicator />;
   }
-  //   const { isAuthenticated } = useContext(AuthenticationContext);
 
   return (
     <NavigationContainer>

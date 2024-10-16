@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { FlatList } from "react-native";
+import { FlatList, ActivityIndicator } from "react-native";
 import { CheckBox } from "react-native-elements";
 import { mockTodos } from "../utils/todos";
 import { toggleTodo } from "../utils/functions";
 import { Todo } from "../utils/todoTypes"; // Import the Todo type
 import styled from "styled-components/native";
 import { useAuth } from "../contexts/auth.context";
+
+const Loading = styled(ActivityIndicator)`
+  margin-left: -25px;
+`;
+const LoadingContainer = styled.View`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+`;
 
 export const AllScreen = () => {
   const { userToken } = useAuth();
@@ -78,6 +87,11 @@ export const AllScreen = () => {
 
   return (
     <Container>
+      {isLoading && (
+        <LoadingContainer>
+          <Loading size={50} animating={true} color="blue" />
+        </LoadingContainer>
+      )}
       <FlatList
         data={todos}
         keyExtractor={(item) => item._id}

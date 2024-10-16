@@ -1,13 +1,23 @@
 // CompletedScreen.tsx
 import React, { useState, useEffect } from "react";
-import { FlatList } from "react-native";
+import { FlatList, ActivityIndicator } from "react-native";
 import { CheckBox } from "react-native-elements";
 import styled from "styled-components/native";
 import { useAuth } from "../contexts/auth.context";
 import { Todo } from "../utils/todoTypes";
 
+const Loading = styled(ActivityIndicator)`
+  margin-left: -25px;
+`;
+const LoadingContainer = styled.View`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+`;
+
 export const CompletedScreen = () => {
-  const { userToken, isLoading } = useAuth();
+  const { userToken } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
   const [todos, setTodos] = useState<Todo[]>([]);
 
   useEffect(() => {
@@ -16,6 +26,7 @@ export const CompletedScreen = () => {
   }, []);
 
   const fetchTodos = async () => {
+    setIsLoading(true);
     try {
       console.log("Fetching todos...");
       const response = await fetch("http://localhost:3000/todos", {
@@ -27,13 +38,16 @@ export const CompletedScreen = () => {
       });
 
       if (!response.ok) {
+        setIsLoading(false);
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
       const data = await response.json();
       console.log("Fetched data", data);
+      setIsLoading(false);
       setTodos(data);
     } catch (error) {
+      setIsLoading(false);
       console.error("Failed to fetch todos", error);
     }
   };
@@ -41,6 +55,11 @@ export const CompletedScreen = () => {
 
   return (
     <Container>
+      {isLoading && (
+        <LoadingContainer>
+          <Loading size={50} animating={true} color="blue" />
+        </LoadingContainer>
+      )}
       {/* <Text>Completed Todos</Text> */}
       <FlatList
         data={completedTodos}

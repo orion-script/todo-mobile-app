@@ -4,16 +4,16 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { HomeScreen } from "../screens/home.screen";
 import { AllScreen } from "../screens/all.screen";
-import { SettingsScreen } from "../screens/settings.screen";
 import { ActiveScreen } from "../screens/active.screen";
 import { CompletedScreen } from "../screens/completed.screen";
+import { ProfileScreen } from "../screens/profile.screen";
 
 const Tab = createBottomTabNavigator();
 
 const TAB_ICON: { [key: string]: keyof typeof Ionicons.glyphMap } = {
   Home: "home",
   All: "list",
-  Setting: "settings",
+  Profile: "settings",
   Active: "flash",
   Completed: "checkmark",
 };
@@ -33,6 +33,6 @@ export const AppNavigator = () => (
     <Tab.Screen name="All" component={AllScreen} />
     <Tab.Screen name="Active" component={ActiveScreen} />
     <Tab.Screen name="Completed" component={CompletedScreen} />
-    <Tab.Screen name="Setting" component={SettingsScreen} />
+    <Tab.Screen name="Profile" component={ProfileScreen} />
   </Tab.Navigator>
 );
