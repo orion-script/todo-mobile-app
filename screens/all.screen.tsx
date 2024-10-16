@@ -30,13 +30,16 @@ export const AllScreen = () => {
     setIsLoading(true);
     try {
       console.log("Fetching todos...");
-      const response = await fetch("http://localhost:3000/todos", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userToken}`,
-        },
-      });
+      const response = await fetch(
+        "https://todo-33hzc3d83-orionscripts-projects.vercel.app/todos",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+        }
+      );
 
       if (!response.ok) {
         setIsLoading(false);
@@ -55,7 +58,7 @@ export const AllScreen = () => {
   const toggleTodo = async (_id: string) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/todos/${_id}/complete`,
+        `https://todo-33hzc3d83-orionscripts-projects.vercel.app/todos/${_id}/complete`,
         {
           method: "PATCH",
           headers: {

@@ -33,13 +33,16 @@ export interface Todo {
 export const fetchTodos = async (userToken: string): Promise<Todo[]> => {
   try {
     console.log("Fetching todos...");
-    const response = await fetch("http://localhost:3000/todos", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userToken}`,
-      },
-    });
+    const response = await fetch(
+      "https://todo-33hzc3d83-orionscripts-projects.vercel.app/todos",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userToken}`,
+        },
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -59,14 +62,17 @@ export const addTodo = async (
   userToken: string
 ): Promise<Todo> => {
   try {
-    const response = await fetch("http://localhost:3000/todos", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userToken}`, // Include user token
-      },
-      body: JSON.stringify(newTodo),
-    });
+    const response = await fetch(
+      "https://todo-33hzc3d83-orionscripts-projects.vercel.app/todos",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userToken}`, // Include user token
+        },
+        body: JSON.stringify(newTodo),
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);

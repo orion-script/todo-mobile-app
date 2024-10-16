@@ -1,0 +1,26 @@
+{
+  "cli": {
+    "version": ">= 12.5.3",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal"
+    },
+    "production": {
+      "ios": {
+        "buildType": "release"
+      },
+      "android": {
+        "buildType": "release"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

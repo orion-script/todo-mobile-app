@@ -23,7 +23,7 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-const baseUrl = "http://localhost:3000/";
+const baseUrl = "https://todo-33hzc3d83-orionscripts-projects.vercel.app/";
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [userToken, setUserToken] = useState<string | null>(null);
