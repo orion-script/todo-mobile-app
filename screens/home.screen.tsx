@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components/native";
 import {
+  Alert,
   ActivityIndicator,
   FlatList,
   TextInput,
@@ -53,8 +54,8 @@ export const HomeScreen = () => {
 
       const data = await response.json();
       setTodos(data);
-    } catch (error) {
-      console.error("Failed to fetch todos", error);
+    } catch (error: any) {
+      Alert.alert("Failed to fetch todos", error);
     }
   };
 
@@ -88,8 +89,8 @@ export const HomeScreen = () => {
       setTitle("");
       setDescription("");
       setDueDate("");
-    } catch (error) {
-      console.error("Failed to add todo", error);
+    } catch (error: any) {
+      Alert.alert("Failed to add todo", error);
     }
   };
 
@@ -120,8 +121,8 @@ export const HomeScreen = () => {
             : todo
         )
       );
-    } catch (error) {
-      console.error("Failed to toggle todo", error);
+    } catch (error: any) {
+      Alert.alert("Failed to toggle todo", error);
     }
   };
 
@@ -226,6 +227,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 10,
+    marginLeft: 20,
   },
   todoItem: {
     flexDirection: "row",

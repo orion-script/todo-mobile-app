@@ -47,8 +47,9 @@ export const ProfileScreen = () => {
           updateProfileDto
         );
         Alert.alert("Profile Updated");
-      } catch (e) {
+      } catch (e: any) {
         Alert.alert("Failed to update profile");
+        Alert.alert("e", e);
       }
     });
   };
@@ -68,8 +69,9 @@ export const ProfileScreen = () => {
       );
       Alert.alert("Password Changed Successfully");
       setIsModalVisible(false);
-    } catch (e) {
+    } catch (e: any) {
       Alert.alert("Failed to change password");
+      Alert.alert("e", e);
     }
   };
 
@@ -86,8 +88,9 @@ export const ProfileScreen = () => {
             updateUserDto
           );
           Alert.alert("User Details Updated");
-        } catch (e) {
+        } catch (e: any) {
           Alert.alert("Failed to update user details");
+          Alert.alert("e", e);
         }
       }
     );

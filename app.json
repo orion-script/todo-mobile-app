@@ -27,7 +27,15 @@
     },
     "extra": {
       "eas": {
-        "projectId": "d32630c9-bb07-4517-a65b-feb64548ac4c"
+        "build": {
+          "development": {
+            "distribution": "internal"
+          },
+          "production": {
+            "distribution": "internal"
+          }
+        },
+        "projectId": "1b611302-e2cd-46f7-a21e-172e6e4758d9"
       }
     }
   }

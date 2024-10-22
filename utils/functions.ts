@@ -1,24 +1,4 @@
-// import { Todo } from "./todoTypes";
-
-// // Define the toggleTodo function
-// export const toggleTodo = (
-//   _id: string,
-//   todos: Todo[],
-//   setTodos: React.Dispatch<React.SetStateAction<Todo[]>>
-// ) => {
-//   setTodos((prevTodos) =>
-//     prevTodos.map((todo) =>
-//       todo._id === _id
-//         ? {
-//             ...todo,
-//             status: todo.status === "completed" ? "pending" : "completed",
-//           }
-//         : todo
-//     )
-//   );
-// };
-
-// src/services/todoService.ts
+import { Alert } from "react-native";
 export interface Todo {
   _id: string;
   title: string;
@@ -32,7 +12,6 @@ export interface Todo {
 
 export const fetchTodos = async (userToken: string): Promise<Todo[]> => {
   try {
-    console.log("Fetching todos...");
     const response = await fetch(
       "https://todo-33hzc3d83-orionscripts-projects.vercel.app/todos",
       {
@@ -49,10 +28,9 @@ export const fetchTodos = async (userToken: string): Promise<Todo[]> => {
     }
 
     const data = await response.json();
-    console.log("Fetched data", data);
     return data; // Return the fetched todos
-  } catch (error) {
-    console.error("Failed to fetch todos", error);
+  } catch (error: any) {
+    Alert.alert("Failed to fetch todos", error);
     throw error; // Rethrow the error to be handled in the component
   }
 };
@@ -80,8 +58,8 @@ export const addTodo = async (
 
     const createdTodo: Todo = await response.json(); // Get the created todo from the response
     return createdTodo; // Return the created todo
-  } catch (error) {
-    console.error("Failed to add todo", error);
+  } catch (error: any) {
+    Alert.alert("Failed to add todo", error);
     throw error; // Rethrow the error to be handled in the component
   }
 };

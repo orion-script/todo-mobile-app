@@ -25,11 +25,9 @@ export const RegisterScreen = ({ navigation }: any) => {
   const [error, setError] = useState<string | null>(null);
 
   const handleRegister = async () => {
-    console.log("Registering...");
     try {
       setError(null);
       await register(name, email, password);
-      console.log("Registered");
     } catch (e) {
       setError("Registration failed");
     }

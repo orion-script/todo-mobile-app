@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FlatList, ActivityIndicator } from "react-native";
+import { FlatList, ActivityIndicator, Alert } from "react-native";
 import { CheckBox } from "react-native-elements";
 import { mockTodos } from "../utils/todos";
 import { toggleTodo } from "../utils/functions";
@@ -23,13 +23,11 @@ export const AllScreen = () => {
 
   useEffect(() => {
     fetchTodos();
-    console.log("Todos", todos);
   }, []);
 
   const fetchTodos = async () => {
     setIsLoading(true);
     try {
-      console.log("Fetching todos...");
       const response = await fetch(
         "https://todo-33hzc3d83-orionscripts-projects.vercel.app/todos",
         {
@@ -46,12 +44,11 @@ export const AllScreen = () => {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       const data = await response.json();
-      console.log("Fetched data", data);
       setIsLoading(false);
       setTodos(data);
-    } catch (error) {
+    } catch (error: any) {
       setIsLoading(false);
-      console.error("Failed to fetch todos", error);
+      Alert.alert("Failed to fetch todos", error);
     }
   };
 
@@ -83,8 +80,8 @@ export const AllScreen = () => {
             : todo
         )
       );
-    } catch (error) {
-      console.error("Failed to toggle todo", error);
+    } catch (error: any) {
+      Alert.alert("Failed to toggle todo", error);
     }
   };
 

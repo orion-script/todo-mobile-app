@@ -23,12 +23,10 @@ export const LoginScreen = ({ navigation }: any) => {
   const [error, setError] = useState<string | null>(null);
 
   const handleLogin = async () => {
-    console.log("Logging in...");
     try {
       setError(null);
       await login(email, password);
-      console.log("Logged in");
-      // navigation.navigate("Home");
+      navigation.navigate("Home");
     } catch (e) {
       setError("Failed to log in");
     }

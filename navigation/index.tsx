@@ -1,29 +1,45 @@
-import React, { useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
 import { AppNavigator } from "./app.navigator";
 import { AccountNavigator } from "./account.navigator";
 import { useAuth } from "../contexts/auth.context";
-import { ActivityIndicator } from "react-native";
-
-// import { AuthenticationContext } from "../../services/authentication/authentication.context";
+import { ActivityIndicator, View, StyleSheet } from "react-native";
 
 export const Navigation = () => {
-  const { userToken, isLoading } = useAuth();
-  // const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
+  const [isNavigatorLoading, setNavigatorLoading] = useState(true);
 
-  console.log("userToken", userToken);
+  // This effect ensures that the loading indicator is shown while switching navigators
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setNavigatorLoading(false);
+    }, 500); // Delay for loading effect, adjust as necessary
 
-  if (isLoading) {
-    return <ActivityIndicator />;
+    return () => clearTimeout(timer);
+  }, [isAuthenticated]);
+
+  // Show a loading indicator if the authentication or navigator is loading
+  if (isLoading || isNavigatorLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
   }
 
   return (
     <NavigationContainer>
-      {userToken ? <AppNavigator /> : <AccountNavigator />}
-      {/* {isAuthenticated ? <AppNavigator /> : <AccountNavigator />} */}
+      {isAuthenticated ? <AppNavigator /> : <AccountNavigator />}
       {/* <AccountNavigator /> */}
-      {/* <AppNavigator /> */}
     </NavigationContainer>
   );
 };
+
+const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#f0f0f0",
+  },
+});

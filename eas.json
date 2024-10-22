@@ -9,15 +9,19 @@
       "distribution": "internal"
     },
     "preview": {
-      "distribution": "internal"
-    },
-    "production": {
       "ios": {
-        "buildType": "release"
+        "simulator": true
       },
       "android": {
-        "buildType": "release"
-      }
+        "buildType": "apk"
+      },
+      "env": {
+        "EAS_BUILD_FORCE_NPM_INSTALL_FLAGS": "--legacy-peer-deps"
+      },
+      "prebuildCommand": "npx expo prebuild"
+    },
+    "production": {
+      "autoIncrement": true
     }
   },
   "submit": {
