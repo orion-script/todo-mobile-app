@@ -3,17 +3,17 @@ import styled from "styled-components/native";
 import {
   Alert,
   ActivityIndicator,
-  FlatList,
   TextInput,
-  Button,
   View,
   Text,
   StyleSheet,
+  TouchableOpacity,
 } from "react-native";
-import { CheckBox } from "react-native-elements";
 import { AnalogClock } from "../components/clock";
 import { useAuth } from "../contexts/auth.context";
-import { Todo } from "../utils/todoTypes";
+import { endpoints } from "../utils/endpoints";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { AuthButton } from "../components/account.styles";
 
 const Loading = styled(ActivityIndicator)`
   margin-left: -25px;
@@ -25,39 +25,19 @@ const LoadingContainer = styled.View`
 `;
 
 export const HomeScreen = () => {
-  const { userToken, isLoading, userProfile } = useAuth();
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const { userToken, userProfile } = useAuth();
+  const [isPageLoading, setIsPageLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [dueDate, setDueDate] = useState<string>("");
+  const [showDatePicker, setShowDatePicker] = useState<any>(false);
 
   useEffect(() => {
-    fetchTodos();
-  }, []);
-
-  const fetchTodos = async () => {
-    try {
-      const response = await fetch(
-        "https://todo-33hzc3d83-orionscripts-projects.vercel.app/todos",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${userToken}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      setTodos(data);
-    } catch (error: any) {
-      Alert.alert("Failed to fetch todos", error);
+    if (userProfile?.name) {
+      setIsPageLoading(false);
     }
-  };
+  }, [userProfile?.name]);
 
   const addTodo = async () => {
     const newTodo = {
@@ -65,127 +45,109 @@ export const HomeScreen = () => {
       description: description || undefined,
       dueDate: dueDate || undefined,
     };
-
+    setIsLoading(true);
     try {
-      const response = await fetch(
-        "https://todo-33hzc3d83-orionscripts-projects.vercel.app/todos",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${userToken}`,
-          },
-          body: JSON.stringify(newTodo),
-        }
-      );
+      const response = await fetch(endpoints.createTodo, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userToken}`,
+        },
+        body: JSON.stringify(newTodo),
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-
-      const createdTodo: Todo = await response.json();
-      setTodos((prevTodos) => [...prevTodos, createdTodo]);
-
+      setIsLoading(false);
+      Alert.alert("Todo created successfully");
       setTitle("");
       setDescription("");
       setDueDate("");
     } catch (error: any) {
+      setIsLoading(false);
       Alert.alert("Failed to add todo", error);
-    }
-  };
-
-  const toggleTodo = async (_id: string) => {
-    try {
-      const response = await fetch(
-        `https://todo-33hzc3d83-orionscripts-projects.vercel.app/todos/${_id}/complete`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${userToken}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      setTodos((prevTodos) =>
-        prevTodos.map((todo) =>
-          todo._id === _id
-            ? {
-                ...todo,
-                status: todo.status === "completed" ? "pending" : "completed",
-              }
-            : todo
-        )
-      );
-    } catch (error: any) {
-      Alert.alert("Failed to toggle todo", error);
     }
   };
 
   return (
     <>
-      {isLoading ? (
+      {isPageLoading ? (
         <LoadingContainer>
           <Loading size={50} animating={true} color="blue" />
         </LoadingContainer>
       ) : (
-        <FlatList
-          data={todos}
-          keyExtractor={(item) => item._id}
-          renderItem={({ item }) => (
-            <View style={styles.todoItem}>
-              <CheckBox
-                checked={item.status === "completed"}
-                onPress={() => toggleTodo(item._id)}
-                containerStyle={styles.checkBoxContainer}
-                textStyle={[
-                  styles.todoText,
-                  item.status === "completed" && styles.completedTodo,
-                ]}
-                title={item.description}
-              />
-            </View>
-          )}
-          ListHeaderComponent={
-            <View>
-              <View style={styles.header}>
-                <Text style={styles.user}>Hey 👋🏼, {userProfile?.name}</Text>
-              </View>
-              <View style={styles.clockContainer}>
-                <AnalogClock />
-              </View>
+        <View>
+          <View style={styles.header}>
+            <Text style={styles.user}>
+              Hey 👋🏼, {userProfile?.name || "....."}
+            </Text>
+          </View>
+          <View style={styles.clockContainer}>
+            <AnalogClock />
+          </View>
 
-              {/* New Todo Input Section */}
-              <View style={styles.inputContainer}>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Title"
-                  value={title}
-                  onChangeText={setTitle}
-                />
-                <TextInput
-                  style={styles.input}
-                  placeholder="Description (optional)"
-                  value={description}
-                  onChangeText={setDescription}
-                />
-                <TextInput
-                  style={styles.input}
-                  placeholder="Due Date (optional)"
-                  value={dueDate}
-                  onChangeText={setDueDate}
-                />
-                <Button title="Add Todo" onPress={addTodo} />
-              </View>
+          {/* New Todo Input Section */}
+          <View style={styles.inputContainer}>
+            <Text style={styles.inputContainerTitle}>Add New Todo</Text>
 
-              <Text style={styles.cardTitle}>Todo List</Text>
-            </View>
-          }
-        />
+            {/* Title Input with Label */}
+            <Text style={styles.label}>Title</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Title"
+              value={title}
+              onChangeText={setTitle}
+            />
+
+            {/* Description Input with Label */}
+            <Text style={styles.label}>Description</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Description"
+              value={description}
+              onChangeText={setDescription}
+            />
+
+            {/* Due Date Input with Label */}
+            <Text style={styles.label}>Due Date</Text>
+            <TouchableOpacity
+              onPress={() => setShowDatePicker(true)}
+              style={styles.datePickerContainer}
+            >
+              {/* Display selected date as text when date picker is hidden */}
+              <Text style={styles.dateText}>
+                {dueDate
+                  ? new Date(dueDate).toLocaleDateString()
+                  : "Select Due Date"}
+              </Text>
+
+              {/* Conditionally show DateTimePicker */}
+              {showDatePicker && (
+                <DateTimePicker
+                  style={styles.datePicker}
+                  value={dueDate ? new Date(dueDate) : new Date()}
+                  mode="date"
+                  display="default"
+                  minimumDate={new Date()}
+                  onChange={(event, selectedDate) => {
+                    setShowDatePicker(false);
+                    if (selectedDate) {
+                      setDueDate(selectedDate.toISOString());
+                    }
+                  }}
+                />
+              )}
+            </TouchableOpacity>
+            <AuthButton icon="arrow-right" mode="contained" onPress={addTodo}>
+              {isLoading ? (
+                <Loading size={20} animating={true} color="white" />
+              ) : (
+                "Create Todo"
+              )}
+            </AuthButton>
+          </View>
+        </View>
       )}
     </>
   );
@@ -206,14 +168,26 @@ const styles = StyleSheet.create({
   },
   clockContainer: {
     alignItems: "center",
-    marginVertical: 30,
+    marginVertical: 5,
+  },
+  inputContainerTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginLeft: 20,
+    textAlign: "center",
+  },
+  label: {
+    fontSize: 16,
+    color: "#333",
+    marginBottom: 5,
+    marginTop: 5,
   },
   inputContainer: {
     padding: 20,
     backgroundColor: "#fff",
     borderRadius: 10,
-    margin: 20,
     elevation: 5,
+    margin: 20,
   },
   input: {
     height: 40,
@@ -223,27 +197,19 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingHorizontal: 10,
   },
-  cardTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 10,
-    marginLeft: 20,
-  },
-  todoItem: {
-    flexDirection: "row",
+  datePickerContainer: {
+    backgroundColor: "#f0f0f0",
+    borderRadius: 8,
+    padding: 10,
     alignItems: "center",
-    paddingVertical: 5,
+    marginTop: 10,
+    marginBottom: 20,
   },
-  checkBoxContainer: {
-    backgroundColor: "transparent",
-    borderWidth: 0,
-  },
-  todoText: {
-    marginLeft: 10,
+  dateText: {
     fontSize: 16,
+    color: "#333",
   },
-  completedTodo: {
-    textDecorationLine: "line-through",
-    color: "#808080",
+  datePicker: {
+    width: "100%",
   },
 });

@@ -147,6 +147,7 @@
 import React, { createContext, useState, ReactNode, useEffect } from "react";
 import { Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Navigate } from "react-router-native";
 
 // Define the shape of your context data
 interface AuthContextData {
@@ -172,7 +173,9 @@ interface AuthProviderProps {
 
 const baseUrl = "https://todo-33hzc3d83-orionscripts-projects.vercel.app/";
 
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+export const AuthProvider: React.FC<AuthProviderProps> = ({
+  children,
+}: any) => {
   const [userToken, setUserToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
@@ -208,6 +211,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setUserProfile(data);
       } else {
         Alert.alert("Failed to fetch profile", data.message);
+        logout();
       }
     } catch (error: any) {
       Alert.alert("Error fetching user profile", error);

@@ -29,14 +29,22 @@ export const AnalogClock = () => {
   const numbers = Array.from({ length: 12 }, (_, i) => i + 1);
   const numberRadius = 70;
 
+  // Format the date string
+  const dateString = time.toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+
   return (
     <Svg height="200" width="200" viewBox="0 0 200 200">
       {/* Shadow circle behind the clock */}
       <Circle
         cx={center}
         cy={center}
-        r={clockRadius + 5} // Slightly larger than the clock itself
-        fill="rgba(0, 0, 0, 0.2)" // Semi-transparent black for shadow
+        r={clockRadius + 5}
+        fill="rgba(0, 0, 0, 0.2)"
       />
 
       {/* Actual clock circle */}
@@ -46,7 +54,7 @@ export const AnalogClock = () => {
         r={clockRadius}
         stroke="black"
         strokeWidth="2"
-        fill="white" // Fill white to match the clock face
+        fill="white"
       />
 
       {/* Clock Numbers */}
@@ -98,6 +106,18 @@ export const AnalogClock = () => {
         stroke="black"
         strokeWidth="4"
       />
+
+      {/* Date text in the center */}
+      <SvgText
+        x={center}
+        y={center + 30} // Slightly below the center
+        fontSize="10"
+        textAnchor="middle"
+        alignmentBaseline="middle"
+        fill="black"
+      >
+        {dateString}
+      </SvgText>
     </Svg>
   );
 };

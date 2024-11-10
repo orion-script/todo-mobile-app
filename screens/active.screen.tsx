@@ -1,6 +1,6 @@
 // ActiveScreen.tsx
 import React, { useState, useEffect } from "react";
-import { FlatList, ActivityIndicator, Alert } from "react-native";
+import { Text, FlatList, ActivityIndicator, Alert } from "react-native";
 import { CheckBox } from "react-native-elements";
 import styled from "styled-components/native";
 import { useAuth } from "../contexts/auth.context";
@@ -67,7 +67,7 @@ export const ActiveScreen = () => {
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <TodoItem>
-            <CheckBox
+            {/* <CheckBox
               checked={item.status === "completed"}
               // onPress={() => toggleTodo(item._id)} // Use the imported function
               containerStyle={{
@@ -81,7 +81,8 @@ export const ActiveScreen = () => {
                 },
               ]}
               title={item.description}
-            />
+            /> */}
+            <TodoText>{item?.description}</TodoText>
           </TodoItem>
         )}
       />
@@ -98,4 +99,11 @@ const TodoItem = styled.View`
   flex-direction: row;
   align-items: center;
   padding-vertical: 5px;
+`;
+
+const TodoText = styled.Text`
+  margin-left: 10px;
+  font-size: 16px;
+  padding-vertical: 10px;
+  color: #333;
 `;

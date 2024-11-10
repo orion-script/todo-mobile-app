@@ -66,7 +66,7 @@ export const CompletedScreen = () => {
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <TodoItem>
-            <CheckBox
+            {/* <CheckBox
               checked={item.status === "completed"}
               // onPress={() => toggleTodo(item._id)} // Use the imported function
               containerStyle={{
@@ -80,7 +80,8 @@ export const CompletedScreen = () => {
                 },
               ]}
               title={item.description}
-            />
+            /> */}
+            <TodoText>{item?.description}</TodoText>
           </TodoItem>
         )}
       />
@@ -105,4 +106,12 @@ const Text = styled.Text`
   font-weight: bold;
   margin-bottom: 10px;
   align-self: center;
+`;
+
+const TodoText = styled.Text`
+  margin-left: 10px;
+  font-size: 16px;
+  padding-vertical: 10px;
+  color: #333;
+  text-decoration-line: line-through;
 `;

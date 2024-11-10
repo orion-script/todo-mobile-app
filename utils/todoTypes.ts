@@ -4,6 +4,7 @@ export type Todo = {
   description?: string; // Optional description
   status: "pending" | "completed"; // Status of the todo
   userId: string; // User ID associated with the todo
+  dueDate?: any; // Due date of the todo
   createdAt: string; // Creation timestamp
   updatedAt: string; // Last update timestamp
 };
