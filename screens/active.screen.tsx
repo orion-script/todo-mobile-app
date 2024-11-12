@@ -1,4 +1,3 @@
-// ActiveScreen.tsx
 import React, { useState, useEffect } from "react";
 import { Text, FlatList, ActivityIndicator, Alert } from "react-native";
 import { CheckBox } from "react-native-elements";

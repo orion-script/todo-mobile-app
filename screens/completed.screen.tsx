@@ -1,4 +1,3 @@
-// CompletedScreen.tsx
 import React, { useState, useEffect } from "react";
 import { FlatList, ActivityIndicator, Alert } from "react-native";
 import { CheckBox } from "react-native-elements";
