@@ -39,6 +39,10 @@ export const HomeScreen = () => {
     }
   }, [userProfile?.name]);
 
+  const sortedName = userProfile?.name?.split(" ")[0] || ".....";
+
+  console.log("sortedName", sortedName);
+
   const addTodo = async () => {
     const newTodo = {
       title,
@@ -79,9 +83,7 @@ export const HomeScreen = () => {
       ) : (
         <View>
           <View style={styles.header}>
-            <Text style={styles.user}>
-              Hey 👋🏼, {userProfile?.name || "....."}
-            </Text>
+            <Text style={styles.user}>Hey 👋🏼, {sortedName}</Text>
           </View>
           <View style={styles.clockContainer}>
             <AnalogClock />
